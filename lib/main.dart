@@ -35,6 +35,7 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBinding(),
       getPages: AppPages.routes,
 
+      initialRoute: AppRoutes.items,
       home: Scaffold(
         body: Center(
           child: Column(

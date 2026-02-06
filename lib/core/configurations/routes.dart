@@ -1,4 +1,9 @@
 import 'package:get/get.dart';
+import 'package:juan_by_juan/features/pages/items/items_binding.dart';
+import 'package:juan_by_juan/features/pages/items/items_page.dart';
+
+import 'package:juan_by_juan/features/pages/people/people_binding.dart';
+import 'package:juan_by_juan/features/pages/people/people_page.dart';
 
 /// centralized route management for the app
 /// all nagivation paths are defined for consistency
@@ -23,5 +28,15 @@ class AppPages {
 
   static final routes = <GetPage>[
     // routes will be added here
+    GetPage(
+      name: AppRoutes.items,
+      page: () => const ItemsPage(),
+      binding: ItemsBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.people,
+      page: () => const PeoplePage(),
+      binding: PeopleBinding(),
+    ),
   ];
 }
