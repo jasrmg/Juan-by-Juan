@@ -27,6 +27,29 @@ class SplitController extends GetxController {
     final args = Get.arguments as Map<String, dynamic>? ?? {};
     items = args['items'] as List<ItemModel>? ?? [];
     people = args['people'] as List<PersonModel>? ?? [];
+    final savedSelections =
+        args['savedSelections'] as Map<int, List<int>>? ?? {};
+    final peopleCountChanged = args['peopleCountChanged'] as bool? ?? false;
+
+    // restore saved selections
+    if (savedSelections.isNotEmpty) {
+      selectedPeoplePerItem.value = Map.from(savedSelections);
+
+      // if people count changed, start at item 1 to review all items
+      // otherwise jump to first unsplit item
+      if (peopleCountChanged) {
+        currentItemIndex.value = 0;
+      } else {
+        // jump to first unsplit item
+        for (int i = 0; i < items.length; i++) {
+          if (!selectedPeoplePerItem.containsKey(i) ||
+              selectedPeoplePerItem[i]!.isEmpty) {
+            currentItemIndex.value = i;
+            break;
+          }
+        }
+      }
+    }
 
     // validate data
     if (items.isEmpty || people.isEmpty) {
@@ -39,27 +62,6 @@ class SplitController extends GetxController {
       );
       Get.back();
       return;
-    }
-
-    // restore saved selections or initilize empty
-    final savedSelections =
-        args['savedSelections'] as Map<int, List<int>>? ?? {};
-    if (savedSelections.isNotEmpty) {
-      selectedPeoplePerItem.value = savedSelections;
-
-      // jump to first unsplit item
-      for (int i = 0; i < items.length; i++) {
-        final selections = selectedPeoplePerItem[i] ?? [];
-        if (selections.isEmpty) {
-          currentItemIndex.value = i;
-          break;
-        }
-      }
-    } else {
-      // initialize empty selection for each item
-      for (int i = 0; i < items.length; i++) {
-        selectedPeoplePerItem[i] = [];
-      }
     }
   }
 

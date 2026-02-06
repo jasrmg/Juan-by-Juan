@@ -23,6 +23,9 @@ class ItemsController extends GetxController {
   // people list to preserve when navigating back and forth
   List<PersonModel> savedPeople = [];
 
+  // saved split selections to preserve
+  Map<int, List<int>> savedSplitSelections = {};
+
   // validate and add item to list
   Future<void> addItem() async {
     // validate form
@@ -101,22 +104,29 @@ class ItemsController extends GetxController {
     if (items.isEmpty) {
       Get.snackbar(
         'No Items',
-        'Please add ad least one item before continuing',
+        'Please add at least one item before continuing',
         snackPosition: SnackPosition.TOP,
         backgroundColor: Colors.orange.shade100,
         colorText: Colors.orange.shade900,
       );
       return;
     }
-    // navigate to people screen with items as arguments
+
+    // navigate to people screen with items, people, and split selections
     final result = await Get.toNamed(
       AppRoutes.people,
-      arguments: {'items': items.toList(), 'people': savedPeople},
+      arguments: {
+        'items': items.toList(),
+        'people': savedPeople,
+        'savedSelections': savedSplitSelections,
+      },
     );
 
-    // save people data when coming back
+    // save people and split selections when coming back
     if (result != null && result is Map<String, dynamic>) {
       savedPeople = result['people'] as List<PersonModel>? ?? [];
+      savedSplitSelections =
+          result['savedSelections'] as Map<int, List<int>>? ?? {};
     }
   }
 

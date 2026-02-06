@@ -24,6 +24,10 @@ class PeopleController extends GetxController {
 
   // saved split selections to preserve when navigating back and forth
   Map<int, List<int>> savedSplitSelections = {};
+
+  // track original people count to detect changes
+  int originalPeopleCount = 0;
+
   @override
   void onInit() {
     super.onInit();
@@ -41,6 +45,7 @@ class PeopleController extends GetxController {
     // restore split selections if coming back from split screen
     final existingSelections =
         args['savedSelections'] as Map<int, List<int>>? ?? {};
+
     if (existingSelections.isNotEmpty) {
       savedSplitSelections = existingSelections;
     }
@@ -125,7 +130,12 @@ class PeopleController extends GetxController {
 
   /// go back to items screen
   void goBack() {
-    Get.back(result: {'people': people.toList()});
+    Get.back(
+      result: {
+        'people': people.toList(),
+        'savedSelections': savedSplitSelections,
+      },
+    );
   }
 
   /// navigate to split screen
@@ -140,6 +150,14 @@ class PeopleController extends GetxController {
       );
       return;
     }
+
+    // detect if people count changed
+    final peopleCountChanged =
+        originalPeopleCount != 0 && originalPeopleCount != people.length;
+
+    // update original count for next time
+    originalPeopleCount = people.length;
+
     // navigate to split screen with items, people and saved selections
     final result = await Get.toNamed(
       AppRoutes.split,
@@ -147,6 +165,7 @@ class PeopleController extends GetxController {
         'items': items,
         'people': people.toList(),
         'savedSelections': savedSplitSelections,
+        'peopleCountChanged': peopleCountChanged, // pass the flag
       },
     );
 
