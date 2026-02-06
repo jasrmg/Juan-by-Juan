@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:juan_by_juan/core/configurations/routes.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
 
@@ -21,11 +22,13 @@ class PeopleController extends GetxController {
   // items passed from previous screen
   late List<ItemModel> items;
 
+  // saved split selections to preserve when navigating back and forth
+  Map<int, List<int>> savedSplitSelections = {};
   @override
   void onInit() {
     super.onInit();
     // get data from previous screen
-    final args = Get.arguments as Map<String, dynamic> ?? {};
+    final args = Get.arguments as Map<String, dynamic>? ?? {};
     // get items from previous screen
     items = args['items'] as List<ItemModel>? ?? [];
 
@@ -33,6 +36,13 @@ class PeopleController extends GetxController {
     final existingPeople = args['people'] as List<PersonModel>? ?? [];
     if (existingPeople.isNotEmpty) {
       people.addAll(existingPeople);
+    }
+
+    // restore split selections if coming back from split screen
+    final existingSelections =
+        args['savedSelections'] as Map<int, List<int>>? ?? {};
+    if (existingSelections.isNotEmpty) {
+      savedSplitSelections = existingSelections;
     }
 
     if (items.isEmpty) {
@@ -119,7 +129,7 @@ class PeopleController extends GetxController {
   }
 
   /// navigate to split screen
-  void goToNextScreen() {
+  void goToNextScreen() async {
     if (people.length < 2) {
       Get.snackbar(
         'Need More People',
@@ -130,9 +140,22 @@ class PeopleController extends GetxController {
       );
       return;
     }
-  }
+    // navigate to split screen with items, people and saved selections
+    final result = await Get.toNamed(
+      AppRoutes.split,
+      arguments: {
+        'items': items,
+        'people': people.toList(),
+        'savedSelections': savedSplitSelections,
+      },
+    );
 
-  // navigate to split screen
+    // save split selections when coming back
+    if (result != null && result is Map<String, dynamic>) {
+      savedSplitSelections =
+          result['savedSelections'] as Map<int, List<int>>? ?? {};
+    }
+  }
 
   @override
   void onClose() {
