@@ -10,7 +10,7 @@ class ItemsController extends GetxController {
   // form key validation
   final formKey = GlobalKey<FormState>();
 
-  // text controllers f or input fields
+  // text controllers for input fields
   final nameController = TextEditingController();
   final priceController = TextEditingController();
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
+import 'package:juan_by_juan/core/data/bill_calculator.dart';
 
 /// controller for split assignment screen, manages item by item split selection
 class SplitController extends GetxController {
@@ -130,7 +131,35 @@ class SplitController extends GetxController {
 
   /// calculate splits and navigate to summary
   void calculateAndNavigate() {
-    // todo
+    isLoading.value = true;
+
+    try {
+      // calculate each person's total using integer-safe math
+      final updatedPeople = BillCalculator.calculateSplits(
+        items: items,
+        people: people,
+        selectedPeoplePerItem: selectedPeoplePerItem,
+      );
+
+      // navigate to summary screen
+      Get.snackbar(
+        'Calculation Complete',
+        'Ready to show summary',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.green.shade100,
+        colorText: Colors.green.shade900,
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Calculation Error',
+        'Failed to calculate splits. Please try again.',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red.shade900,
+      );
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   /// go back to people screen
