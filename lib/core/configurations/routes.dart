@@ -8,6 +8,9 @@ import 'package:juan_by_juan/features/pages/people/people_page.dart';
 import 'package:juan_by_juan/features/pages/split/split_binding.dart';
 import 'package:juan_by_juan/features/pages/split/split_page.dart';
 
+import 'package:juan_by_juan/features/pages/summary/summary_binding.dart';
+import 'package:juan_by_juan/features/pages/summary/summary_page.dart';
+
 /// centralized route management for the app
 /// all nagivation paths are defined for consistency
 class AppRoutes {
@@ -45,6 +48,11 @@ class AppPages {
       name: AppRoutes.split,
       page: () => const SplitPage(),
       binding: SplitBinding(),
+    ),
+    GetPage(
+      name: AppRoutes.summary,
+      page: () => const SummaryPage(),
+      binding: SummaryBinding(),
     ),
   ];
 }

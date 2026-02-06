@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
 import 'package:juan_by_juan/core/data/bill_calculator.dart';
+import 'package:juan_by_juan/core/configurations/routes.dart';
 
 /// controller for split assignment screen, manages item by item split selection
 class SplitController extends GetxController {
@@ -142,12 +143,13 @@ class SplitController extends GetxController {
       );
 
       // navigate to summary screen
-      Get.snackbar(
-        'Calculation Complete',
-        'Ready to show summary',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.green.shade100,
-        colorText: Colors.green.shade900,
+      Get.toNamed(
+        AppRoutes.summary,
+        arguments: {
+          'items': items,
+          'people': updatedPeople,
+          'selectedPeoplePerItem': selectedPeoplePerItem,
+        },
       );
     } catch (e) {
       Get.snackbar(
