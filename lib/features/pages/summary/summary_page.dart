@@ -97,12 +97,22 @@ class SummaryPage extends GetView<SummaryController> {
           // new bill button
           Padding(
             padding: const EdgeInsets.all(16),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: controller.startNewBill,
-                child: const Text('Start New Bill'),
-              ),
+            child: Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => _showSaveBillDialog(context),
+                    child: const Text('Save Bill'),
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: controller.startNewBill,
+                    child: const Text('New Bill'),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -169,6 +179,39 @@ class SummaryPage extends GetView<SummaryController> {
             const SizedBox(height: 16),
           ],
         ),
+      ),
+    );
+  }
+
+  /// show dialog to save bill with name
+  void _showSaveBillDialog(BuildContext context) {
+    final nameController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Save Bill'),
+        content: TextField(
+          controller: nameController,
+          decoration: const InputDecoration(
+            labelText: 'Bill Name',
+            hintText: 'e.g Dinner at Restaurant',
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
+          ElevatedButton(
+            onPressed: () {
+              final name = nameController.text.trim();
+              if (name.isNotEmpty) {
+                Get.back();
+                controller.saveBill(name);
+              }
+            },
+            child: const Text('Save'),
+          ),
+        ],
       ),
     );
   }
