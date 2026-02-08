@@ -19,6 +19,9 @@ import 'package:juan_by_juan/features/pages/history/history_page.dart';
 import 'package:juan_by_juan/features/pages/home/home_binding.dart';
 import 'package:juan_by_juan/features/pages/home/home_page.dart';
 
+import 'package:juan_by_juan/features/pages/splash/splash_binding.dart';
+import 'package:juan_by_juan/features/pages/splash/splash_page.dart';
+
 /// centralized route management for the app
 /// all nagivation paths are defined for consistency
 class AppRoutes {
@@ -33,6 +36,7 @@ class AppRoutes {
   static const String summary = '/summary';
   static const String history = '/history';
   static const String billDetail = '/bill-detail';
+  static const String splash = '/splash';
 }
 
 /// GetX route config
@@ -79,6 +83,12 @@ class AppPages {
       name: AppRoutes.home,
       page: () => const HomePage(),
       binding: HomeBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.splash,
+      page: () => const SplashPage(),
+      binding: SplashBinding(),
     ),
   ];
 }
