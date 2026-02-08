@@ -76,10 +76,12 @@ class HomePage extends GetView<HomeController> {
                   // recent bills section
                   Obx(() {
                     if (controller.isLoading.value) {
-                      return const Center(child: CircularProgressIndicator());
+                      return const Expanded(
+                        child: Center(child: CircularProgressIndicator()),
+                      );
                     }
 
-                    if (controller.recentBills.isEmpty) {
+                    if (controller.displayedBills.isEmpty) {
                       return const SizedBox.shrink();
                     }
 
@@ -98,9 +100,33 @@ class HomePage extends GetView<HomeController> {
                           const SizedBox(height: 12),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: controller.recentBills.length,
+                              itemCount:
+                                  controller.displayedBills.length +
+                                  (controller.hasMoreBills ? 1 : 0),
                               itemBuilder: (context, index) {
-                                final bill = controller.recentBills[index];
+                                // load more button at the end
+                                if (index == controller.displayedBills.length) {
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 16,
+                                    ),
+                                    child: Center(
+                                      child: Obx(() {
+                                        if (controller.isLoadingMore.value) {
+                                          return const CircularProgressIndicator();
+                                        }
+                                        return OutlinedButton.icon(
+                                          onPressed: controller.loadNextPage,
+                                          icon: const Icon(Icons.expand_more),
+                                          label: const Text('Load More'),
+                                        );
+                                      }),
+                                    ),
+                                  );
+                                }
+
+                                // bill card
+                                final bill = controller.displayedBills[index];
                                 return Card(
                                   margin: const EdgeInsets.only(bottom: 8),
                                   child: ListTile(
