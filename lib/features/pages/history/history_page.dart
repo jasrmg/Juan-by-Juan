@@ -38,8 +38,28 @@ class HistoryPage extends GetView<HistoryController> {
         }
         return ListView.builder(
           padding: const EdgeInsets.all(16),
-          itemCount: controller.bills.length,
+          itemCount: controller.bills.length + 
+              (controller.hasMoreBills ? 1 : 0),
           itemBuilder: (context, index) {
+            // load more button at the end
+            if (index == controller.bills.length) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                child: Center(
+                  child: Obx(() {
+                    if (controller.isLoadingMore.value) {
+                      return const CircularProgressIndicator();
+                    }
+                    return OutlinedButton.icon(
+                      onPressed: controller.loadNextPage,
+                      icon: const Icon(Icons.expand_more),
+                      label: const Text('Load More'),
+                    );
+                  }),
+                ),
+              );
+            }
+            
             final bill = controller.bills[index];
 
             return Dismissible(
