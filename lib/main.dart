@@ -35,49 +35,7 @@ class MyApp extends StatelessWidget {
       initialBinding: AppBinding(),
       getPages: AppPages.routes,
 
-      initialRoute: AppRoutes.items,
-      home: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                flavorConfig.appName,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              const SizedBox(height: 16),
-              // Show flavor badge (only for non-prod)
-              if (!flavorConfig.isProduction)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: flavorConfig.isUAT ? Colors.orange : Colors.blue,
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    'ENV: ${flavorConfig.flavorName}',
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              const SizedBox(height: 24),
-              const Text(
-                'Bootstrap Complete! ✅',
-                style: TextStyle(fontSize: 18),
-              ),
-            ],
-          ),
-        ),
-      ),
+      initialRoute: AppRoutes.home,
     );
   }
 }
