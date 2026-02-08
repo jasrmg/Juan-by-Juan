@@ -76,6 +76,7 @@ class HistoryController extends GetxController {
   /// open a saved bill (view-only)
   void openBill(BillModel bill) {
     // open bill functionalities...
+    Get.toNamed('/bill-detail', arguments: bill);
   }
 
   /// toggle pin status for a bill

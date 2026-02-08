@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:juan_by_juan/features/pages/bill_detail/bill_detail_binding.dart';
+import 'package:juan_by_juan/features/pages/bill_detail/bill_detail_page.dart';
 import 'package:juan_by_juan/features/pages/items/items_binding.dart';
 import 'package:juan_by_juan/features/pages/items/items_page.dart';
 
@@ -27,6 +29,7 @@ class AppRoutes {
   static const String split = '/split';
   static const String summary = '/summary';
   static const String history = '/history';
+  static const String billDetail = '/bill-detail';
 }
 
 /// GetX route config
@@ -61,6 +64,12 @@ class AppPages {
       name: AppRoutes.history,
       page: () => const HistoryPage(),
       binding: HistoryBinding(),
+    ),
+
+    GetPage(
+      name: AppRoutes.billDetail,
+      page: () => const BillDetailPage(),
+      binding: BillDetailBinding(),
     ),
   ];
 }
