@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:juan_by_juan/core/configurations/routes.dart';
 import 'package:juan_by_juan/features/pages/items/items_controller.dart';
 
 /// items screen - first step
@@ -11,7 +12,16 @@ class ItemsPage extends GetView<ItemsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Add Items'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('Add Items'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () => Get.toNamed(AppRoutes.history),
+            tooltip: 'Bill History',
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
