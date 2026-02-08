@@ -100,9 +100,13 @@ class SummaryPage extends GetView<SummaryController> {
             child: Row(
               children: [
                 Expanded(
-                  child: OutlinedButton(
-                    onPressed: () => _showSaveBillDialog(context),
-                    child: const Text('Save Bill'),
+                  child: Obx(
+                    () => OutlinedButton(
+                      onPressed: controller.isBillSaved.value
+                          ? null
+                          : () => _showSaveBillDialog(context),
+                      child: const Text('Save Bill'),
+                    ),
                   ),
                 ),
                 const SizedBox(width: 12),

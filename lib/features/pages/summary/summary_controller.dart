@@ -5,6 +5,7 @@ import 'package:juan_by_juan/core/models/person_model.dart';
 import 'package:juan_by_juan/core/data/database_helper.dart';
 import 'package:juan_by_juan/core/models/bill_model.dart';
 import 'package:flutter/material.dart';
+import 'package:juan_by_juan/features/pages/items/items_controller.dart';
 
 /// controller for summary screen
 /// manages leaderboard display and person detail modal
@@ -16,6 +17,9 @@ class SummaryController extends GetxController {
 
   // total bill amount in centavos
   late int totalBill;
+
+  // track if bill has been saved
+  final isBillSaved = false.obs;
 
   @override
   void onInit() {
@@ -102,6 +106,9 @@ class SummaryController extends GetxController {
         backgroundColor: Colors.green.shade100,
         colorText: Colors.green.shade900,
       );
+
+      // mark bill as saved
+      isBillSaved.value = true;
     } catch (e) {
       Get.snackbar(
         'Save Failed',
@@ -115,6 +122,10 @@ class SummaryController extends GetxController {
 
   /// navigate back to items screen. start new bill
   void startNewBill() {
+    // get items controller and clear all data
+    final itemsController = Get.find<ItemsController>();
+    itemsController.clearAll();
+
     // go back to items screen and clear navigation stack
     Get.until((route) => route.settings.name == '/items');
   }

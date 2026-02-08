@@ -99,6 +99,15 @@ class ItemsController extends GetxController {
     );
   }
 
+  /// clear all data (items, people, splits)
+  void clearAll() {
+    items.clear();
+    savedPeople.clear();
+    savedSplitSelections.clear();
+    nameController.clear();
+    priceController.clear();
+  }
+
   /// navigate to people screen
   void goToNextScreen() async {
     if (items.isEmpty) {
