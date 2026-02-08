@@ -39,7 +39,8 @@ class DatabaseHelper {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
         total_amount INTEGER NOT NULL,
-        created_at TEXT NOT NULL
+        created_at TEXT NOT NULL,
+        is_pinned INTEGER DEFAULT 0
       )
     ''');
 
@@ -115,6 +116,17 @@ class DatabaseHelper {
   Future<int> deleteBill(int id) async {
     final db = await database;
     return await db.delete('bills', where: 'id = ?', whereArgs: [id]);
+  }
+
+  /// update bill pin status
+  Future<int> updateBillPinStatus(int billId, bool isPinned) async {
+    final db = await database;
+    return await db.update(
+      'bills',
+      {'is_pinned': isPinned ? 1 : 0},
+      where: 'id = ?',
+      whereArgs: [billId],
+    );
   }
 
   /// insert and item and return its id

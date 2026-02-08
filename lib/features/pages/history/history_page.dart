@@ -42,27 +42,84 @@ class HistoryPage extends GetView<HistoryController> {
           itemBuilder: (context, index) {
             final bill = controller.bills[index];
 
-            return Card(
-              margin: const EdgeInsets.only(bottom: 12),
-              child: ListTile(
-                leading: CircleAvatar(
-                  backgroundColor: Colors.teal,
-                  child: const Icon(Icons.receipt, color: Colors.white),
+            return Dismissible(
+              key: Key(bill.id.toString()),
+              background: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                title: Text(
-                  bill.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.only(left: 20),
+                child: const Icon(Icons.delete, color: Colors.white, size: 32),
+              ),
+              secondaryBackground: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                subtitle: Text(bill.formattedDate),
-                trailing: Text(
-                  CurrencyFormatter.format(bill.totalAmount),
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                alignment: Alignment.centerRight,
+                padding: const EdgeInsets.only(right: 20),
+                child: const Icon(
+                  Icons.push_pin,
+                  color: Colors.white,
+                  size: 32,
+                ),
+              ),
+              confirmDismiss: (direction) async {
+                if (direction == DismissDirection.startToEnd) {
+                  // swipe right - delete
+                  return await _showDeleteDialog(context, bill);
+                } else {
+                  // swipe left - pin/unpin
+                  controller.togglePin(bill);
+                  return false;
+                }
+              },
+              child: Card(
+                margin: const EdgeInsets.only(bottom: 12),
+                child: ListTile(
+                  leading: Stack(
+                    children: [
+                      CircleAvatar(
+                        backgroundColor: Colors.teal,
+                        child: const Icon(Icons.receipt, color: Colors.white),
+                      ),
+                      if (bill.isPinned)
+                        Positioned(
+                          right: 0,
+                          bottom: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(2),
+                            decoration: const BoxDecoration(
+                              color: Colors.blue,
+                              shape: BoxShape.circle,
+                            ),
+                            child: const Icon(
+                              Icons.push_pin,
+                              size: 12,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
+                  title: Text(
+                    bill.name,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  subtitle: Text(bill.formattedDate),
+                  trailing: Text(
+                    CurrencyFormatter.format(bill.totalAmount),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  onTap: () => controller.openBill(bill),
                 ),
-                onTap: () => controller.openBill(bill),
-                onLongPress: () => _showDeleteDialog(context, bill),
               ),
             );
           },
@@ -72,18 +129,21 @@ class HistoryPage extends GetView<HistoryController> {
   }
 
   /// show delete confirmation dialog
-  void _showDeleteDialog(BuildContext context, bill) {
-    showDialog(
+  Future<bool?> _showDeleteDialog(BuildContext context, bill) {
+    return showDialog<bool?>(
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Delete Bill'),
         content: Text('Delete "${bill.name}"?'),
         actions: [
-          TextButton(onPressed: () => Get.back(), child: const Text('Cancel')),
+          TextButton(
+            onPressed: () => Get.back(result: false),
+            child: const Text('Cancel'),
+          ),
           ElevatedButton(
             onPressed: () {
-              Get.back();
               controller.deleteBill(bill.id!, bill.name);
+              Get.back(result: true);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.red,

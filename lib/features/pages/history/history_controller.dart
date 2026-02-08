@@ -27,6 +27,13 @@ class HistoryController extends GetxController {
       final billMaps = await db.getAllBills();
 
       bills.value = billMaps.map((map) => BillModel.fromMap(map)).toList();
+
+      // sort: pinned bills first then by date
+      bills.sort((a, b) {
+        if (a.isPinned && !b.isPinned) return -1;
+        if (!a.isPinned && b.isPinned) return 1;
+        return b.createdAt.compareTo(a.createdAt);
+      });
     } catch (e) {
       Get.snackbar(
         'Load Failed',
@@ -69,5 +76,45 @@ class HistoryController extends GetxController {
   /// open a saved bill (view-only)
   void openBill(BillModel bill) {
     // open bill functionalities...
+  }
+
+  /// toggle pin status for a bill
+  Future<void> togglePin(BillModel bill) async {
+    try {
+      final db = DatabaseHelper();
+      final newPinStatus = !bill.isPinned;
+
+      await db.updateBillPinStatus(bill.id!, newPinStatus);
+
+      // update in list
+      final index = bills.indexWhere((b) => b.id == bill.id);
+      if (index != -1) {
+        bills[index] = bill.copyWith(isPinned: newPinStatus);
+
+        // sort: pinned bills first
+        bills.sort((a, b) {
+          if (a.isPinned && !b.isPinned) return -1;
+          if (!a.isPinned && b.isPinned) return 1;
+          return b.createdAt.compareTo(a.createdAt);
+        });
+      }
+
+      Get.snackbar(
+        newPinStatus ? 'Bill Pinned' : 'Bill Unpinned',
+        '"${bill.name}"',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.blue.shade100,
+        colorText: Colors.blue.shade900,
+        duration: const Duration(seconds: 2),
+      );
+    } catch (e) {
+      Get.snackbar(
+        'Failed',
+        'Could not update pin status',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: Colors.red.shade100,
+        colorText: Colors.red.shade900,
+      );
+    }
   }
 }
