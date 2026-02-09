@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/data/bill_calculator.dart';
+import 'package:juan_by_juan/core/error/error_handler.dart';
+import 'package:juan_by_juan/core/error/exceptions.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
 import 'package:juan_by_juan/core/data/database_helper.dart';
@@ -72,10 +74,17 @@ class SummaryController extends GetxController {
       // insert bill and get id
       final billId = await db.insertBill(bill.toMap());
 
+      if (billId <= 0) {
+        throw DatabaseException('Failed to create bill record');
+      }
+
       // insert items and and store their db ids
       final itemDbIds = <int>[];
       for (var item in items) {
         final itemId = await db.insertItem(item.toMap(billId: billId));
+        if (itemId <= 0) {
+          throw DatabaseException('Failed to save item: ${item.name}');
+        }
         itemDbIds.add(itemId);
       }
 
@@ -83,6 +92,9 @@ class SummaryController extends GetxController {
       final peopleDbIds = <int>[];
       for (var person in people) {
         final personId = await db.insertPerson(person.toMap(billId: billId));
+        if (personId <= 0) {
+          throw DatabaseException('Failed to save person: ${person.name}');
+        }
         peopleDbIds.add(personId);
       }
 
@@ -110,13 +122,7 @@ class SummaryController extends GetxController {
       // mark bill as saved
       isBillSaved.value = true;
     } catch (e) {
-      Get.snackbar(
-        'Save Failed',
-        'Failed to save bill. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
-      );
+      ErrorHandler.handle(e, fallbackMessage: 'Faled to save bill');
     }
   }
 
