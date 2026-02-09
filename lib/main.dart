@@ -9,8 +9,16 @@ void main() async {
   // ensure flutter is initialized before loading env
   WidgetsFlutterBinding.ensureInitialized();
 
+  // detect flavor from build config
+  // await FlavorConfig.initialize(Flavor.uat);
+  const flavor = String.fromEnvironment('FLAVOR', defaultValue: 'uat');
+  final flavorEnum = Flavor.values.firstWhere(
+    (e) => e.name == flavor,
+    orElse: () => Flavor.uat,
+  );
+
   // initialize flavors config
-  await FlavorConfig.initialize(Flavor.uat);
+  await FlavorConfig.initialize(flavorEnum);
 
   runApp(const MyApp());
 }

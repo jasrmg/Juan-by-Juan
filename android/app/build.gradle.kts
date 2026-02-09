@@ -20,14 +20,29 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.jasrmgdev.juan_by_juan"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://flutter.dev/to/review-gradle-config.
+      applicationId = "com.jasrmgdev.juan_by_juan"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+    }
+
+    flavorDimensions += "environment"
+    productFlavors {
+      create("uat") {
+        dimension = "environment"
+        versionNameSuffix ="-uat"
+        resValue("string", "app_name", "Juan by Juan UAT")
+      }
+      create("qat") {
+        dimension = "environment"
+        versionNameSuffix ="-qat"
+        resValue("string", "app_name", "Juan by Juan QAT")
+      }
+      create("prod") {
+        dimension = "environment"
+        resValue("string", "app_name", "Juan by Juan")
+      }
     }
 
     buildTypes {
