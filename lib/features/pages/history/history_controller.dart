@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/data/database_helper.dart';
+import 'package:juan_by_juan/core/error/error_handler.dart';
 import 'package:juan_by_juan/core/models/bill_model.dart';
 
 /// controller for history screen
@@ -47,13 +48,7 @@ class HistoryController extends GetxController {
       // load first page
       _loadPage(0);
     } catch (e) {
-      Get.snackbar(
-        'Load Failed',
-        'Failed to load bills',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
-      );
+      ErrorHandler.handle(e, fallbackMessage: 'Failed to load bills');
     } finally {
       isLoading.value = false;
     }
@@ -114,13 +109,7 @@ class HistoryController extends GetxController {
         duration: const Duration(seconds: 2),
       );
     } catch (e) {
-      Get.snackbar(
-        'Delete Failed',
-        'Failed to delete bill',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
-      );
+      ErrorHandler.handle(e, fallbackMessage: 'Failed to delete bill');
     }
   }
 
@@ -171,13 +160,7 @@ class HistoryController extends GetxController {
         duration: const Duration(seconds: 2),
       );
     } catch (e) {
-      Get.snackbar(
-        'Failed',
-        'Could not update pin status',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
-      );
+      ErrorHandler.handle(e, fallbackMessage: 'Could not update pin status');
     }
   }
 }

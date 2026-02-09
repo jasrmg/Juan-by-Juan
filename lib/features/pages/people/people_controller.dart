@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/configurations/routes.dart';
+import 'package:juan_by_juan/core/error/error_handler.dart';
+import 'package:juan_by_juan/core/error/exceptions.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
 
@@ -76,15 +78,7 @@ class PeopleController extends GetxController {
 
       // check for duplicate names
       if (people.any((p) => p.name.toLowerCase() == name.toLowerCase())) {
-        Get.snackbar(
-          'Duplicate Name',
-          'This person has already been added',
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: Colors.orange.shade100,
-          colorText: Colors.orange.shade900,
-        );
-        isLoading.value = false;
-        return;
+        throw ValidationException('This person has already been added');
       }
 
       // create person
@@ -104,13 +98,7 @@ class PeopleController extends GetxController {
         duration: const Duration(seconds: 2),
       );
     } catch (e) {
-      Get.snackbar(
-        'Error',
-        'Failed to add person. Please try again.',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: Colors.red.shade100,
-        colorText: Colors.red.shade900,
-      );
+      ErrorHandler.handle(e, fallbackMessage: 'Failed to add person');
     } finally {
       isLoading.value = false;
     }

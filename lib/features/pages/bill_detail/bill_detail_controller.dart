@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/data/database_helper.dart';
+import 'package:juan_by_juan/core/error/error_handler.dart';
 import 'package:juan_by_juan/core/models/bill_model.dart';
 import 'package:juan_by_juan/core/models/item_model.dart';
 import 'package:juan_by_juan/core/models/person_model.dart';
@@ -39,6 +40,7 @@ class BillDetailController extends GetxController {
       people.sort((a, b) => b.totalAmount.compareTo(a.totalAmount));
     } catch (e) {
       // show empty list
+      ErrorHandler.handle(e, fallbackMessage: 'Failed to load bill details');
     } finally {
       isLoading.value = false;
     }
