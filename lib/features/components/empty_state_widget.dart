@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juan_by_juan/core/constants/app_constants.dart';
 
 /// reusable empty state widget
 class EmptyStateWidget extends StatelessWidget {
@@ -18,13 +19,20 @@ class EmptyStateWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           if (icon != null) ...[
-            Icon(icon, size: 64, color: Colors.grey.shade400),
-            const SizedBox(height: 16),
+            Icon(
+              icon,
+              size: AppConstants.iconSizeLarge,
+              color: Colors.grey.shade400,
+            ),
+            const SizedBox(height: AppConstants.spacingMedium),
           ],
           Text(
             message,
             textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 16, color: Colors.grey),
+            style: const TextStyle(
+              fontSize: AppConstants.textSizeBody,
+              color: Colors.grey,
+            ),
           ),
         ],
       ),

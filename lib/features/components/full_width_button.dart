@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juan_by_juan/core/constants/app_constants.dart';
 
 /// reusable full-width button for navigation/actions
 class FullWidthButton extends StatelessWidget {
@@ -21,14 +22,14 @@ class FullWidthButton extends StatelessWidget {
           ? ElevatedButton(
               onPressed: onPressed,
               style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: AppConstants.buttonPaddingVertical,
               ),
               child: Text(label),
             )
           : OutlinedButton(
               onPressed: onPressed,
               style: OutlinedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 16),
+                padding: AppConstants.buttonPaddingVertical,
               ),
               child: Text(label),
             ),

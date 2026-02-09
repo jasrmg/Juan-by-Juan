@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juan_by_juan/core/constants/app_constants.dart';
 
 /// reusable list item card with number badge and delete button
 class ListItemCard extends StatelessWidget {
@@ -18,7 +19,7 @@ class ListItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: const EdgeInsets.only(bottom: 8),
+      margin: AppConstants.cardMarginBottom,
       child: ListTile(
         leading: CircleAvatar(child: Text('${index + 1}')),
         title: Text(title),

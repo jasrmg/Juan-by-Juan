@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:juan_by_juan/core/constants/app_constants.dart';
 
 /// reusable button with loading state
 class LoadingButton extends StatelessWidget {
@@ -25,9 +26,11 @@ class LoadingButton extends StatelessWidget {
         onPressed: isLoading ? null : onPressed,
         icon: isLoading
             ? const SizedBox(
-                width: 20,
-                height: 20,
-                child: CircularProgressIndicator(strokeWidth: 2),
+                width: AppConstants.spinnerSize,
+                height: AppConstants.spinnerSize,
+                child: CircularProgressIndicator(
+                  strokeWidth: AppConstants.spinnerStrokeWidth,
+                ),
               )
             : Icon(icon ?? Icons.check),
         label: Text(isLoading ? loadingLabel : label),
