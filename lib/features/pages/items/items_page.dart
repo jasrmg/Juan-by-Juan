@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/configurations/routes.dart';
 import 'package:juan_by_juan/features/components/empty_state_widget.dart';
+import 'package:juan_by_juan/features/components/full_width_button.dart';
+import 'package:juan_by_juan/features/components/loading_button.dart';
 import 'package:juan_by_juan/features/pages/items/items_controller.dart';
 
 import 'package:juan_by_juan/features/components/list_item_card.dart';
@@ -82,25 +84,12 @@ class ItemsPage extends GetView<ItemsController> {
 
                   // add item button
                   Obx(
-                    () => SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : controller.addItem,
-                        icon: controller.isLoading.value
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Icon(Icons.add),
-                        label: Text(
-                          controller.isLoading.value ? 'Adding...' : 'Add Item',
-                        ),
-                      ),
+                    () => LoadingButton(
+                      isLoading: controller.isLoading.value,
+                      onPressed: controller.addItem,
+                      label: 'Add Item',
+                      loadingLabel: 'Adding...',
+                      icon: Icons.add,
                     ),
                   ),
                 ],
@@ -136,17 +125,11 @@ class ItemsPage extends GetView<ItemsController> {
             ),
             // next button
             Obx(
-              () => SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: controller.items.isEmpty
-                      ? null
-                      : controller.goToNextScreen,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Next: Add People'),
-                ),
+              () => FullWidthButton(
+                onPressed: controller.items.isEmpty
+                    ? null
+                    : controller.goToNextScreen,
+                label: 'Next: Add People',
               ),
             ),
           ],

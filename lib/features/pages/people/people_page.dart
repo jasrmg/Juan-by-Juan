@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/features/components/empty_state_widget.dart';
 import 'package:juan_by_juan/features/components/list_item_card.dart';
+import 'package:juan_by_juan/features/components/loading_button.dart';
 import 'package:juan_by_juan/features/pages/people/people_controller.dart';
+
+import '../../components/full_width_button.dart';
 
 /// people screen - second step
 class PeoplePage extends GetView<PeopleController> {
@@ -48,27 +51,12 @@ class PeoplePage extends GetView<PeopleController> {
 
                   // add person button
                   Obx(
-                    () => SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        onPressed: controller.isLoading.value
-                            ? null
-                            : controller.addPerson,
-                        icon: controller.isLoading.value
-                            ? const SizedBox(
-                                width: 20,
-                                height: 20,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Icon(Icons.person_add),
-                        label: Text(
-                          controller.isLoading.value
-                              ? 'Adding...'
-                              : 'Add Person',
-                        ),
-                      ),
+                    () => LoadingButton(
+                      isLoading: controller.isLoading.value,
+                      onPressed: controller.addPerson,
+                      label: 'Add Person',
+                      loadingLabel: 'Adding...',
+                      icon: Icons.person_add,
                     ),
                   ),
                 ],
@@ -105,17 +93,11 @@ class PeoplePage extends GetView<PeopleController> {
 
             // next button
             Obx(
-              () => SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: controller.people.length < 2
-                      ? null
-                      : controller.goToNextScreen,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                  ),
-                  child: const Text('Next: Split Items'),
-                ),
+              () => FullWidthButton(
+                onPressed: controller.people.length < 2
+                    ? null
+                    : controller.goToNextScreen,
+                label: 'Next: Split Items',
               ),
             ),
           ],
