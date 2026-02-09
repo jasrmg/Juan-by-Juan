@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/features/components/empty_state_widget.dart';
+import 'package:juan_by_juan/features/components/list_item_card.dart';
 import 'package:juan_by_juan/features/pages/people/people_controller.dart';
 
 /// people screen - second step
@@ -92,19 +93,10 @@ class PeoplePage extends GetView<PeopleController> {
                   itemCount: controller.people.length,
                   itemBuilder: (context, index) {
                     final person = controller.people[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        leading: CircleAvatar(child: Text('${index + 1}')),
-                        title: Text(person.name),
-                        trailing: IconButton(
-                          icon: const Icon(
-                            Icons.delete_outline,
-                            color: Colors.red,
-                          ),
-                          onPressed: () => controller.removePerson(index),
-                        ),
-                      ),
+                    return ListItemCard(
+                      index: index,
+                      title: person.name,
+                      onDelete: () => controller.removePerson(index),
                     );
                   },
                 );

@@ -5,6 +5,8 @@ import 'package:juan_by_juan/core/configurations/routes.dart';
 import 'package:juan_by_juan/features/components/empty_state_widget.dart';
 import 'package:juan_by_juan/features/pages/items/items_controller.dart';
 
+import 'package:juan_by_juan/features/components/list_item_card.dart';
+
 /// items screen - first step
 /// users add items with name and price
 class ItemsPage extends GetView<ItemsController> {
@@ -122,20 +124,11 @@ class ItemsPage extends GetView<ItemsController> {
                   itemCount: controller.items.length,
                   itemBuilder: (context, index) {
                     final item = controller.items[index];
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        leading: CircleAvatar(child: Text('${index + 1}')),
-                        title: Text(item.name),
-                        subtitle: Text(item.formattedPrice),
-                        trailing: IconButton(
-                          icon: const Icon(
-                            Icons.delete_outline,
-                            color: Colors.red,
-                          ),
-                          onPressed: () => controller.removeItem(index),
-                        ),
-                      ),
+                    return ListItemCard(
+                      index: index,
+                      title: item.name,
+                      subtitle: item.formattedPrice,
+                      onDelete: () => controller.removeItem(index),
                     );
                   },
                 );
