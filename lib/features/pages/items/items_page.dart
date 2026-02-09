@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:juan_by_juan/core/configurations/routes.dart';
+import 'package:juan_by_juan/features/components/empty_state_widget.dart';
 import 'package:juan_by_juan/features/pages/items/items_controller.dart';
 
 /// items screen - first step
@@ -111,12 +112,9 @@ class ItemsPage extends GetView<ItemsController> {
             Expanded(
               child: Obx(() {
                 if (controller.items.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No items yet.\nAdd your first item above!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
+                  return const EmptyStateWidget(
+                    message: 'No items yet.\nAdd your first item above.',
+                    icon: Icons.shopping_bag_outlined,
                   );
                 }
 

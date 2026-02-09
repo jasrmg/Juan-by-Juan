@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:juan_by_juan/features/components/empty_state_widget.dart';
 import 'package:juan_by_juan/features/pages/people/people_controller.dart';
 
 /// people screen - second step
@@ -80,12 +81,10 @@ class PeoplePage extends GetView<PeopleController> {
             Expanded(
               child: Obx(() {
                 if (controller.people.isEmpty) {
-                  return const Center(
-                    child: Text(
-                      'No people yet.\nAdd at least 2 people to continue!',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.grey),
-                    ),
+                  return const EmptyStateWidget(
+                    message:
+                        'No people yet.\nAdd at least 2 people to continue.',
+                    icon: Icons.people_outline,
                   );
                 }
 
